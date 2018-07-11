@@ -33,7 +33,7 @@ namespace converter
                     binStr = decInt.ToString() + binStr;
                 }
             }
-            Console.WriteLine(binStr);
+            Console.WriteLine("binary number:" + binStr);
             Console.WriteLine("enter binary number");
             string binToDec = Console.ReadLine();
             int len = binToDec.Length;
@@ -51,7 +51,7 @@ namespace converter
                 num = num - 1;
                 index++;
             }
-            Console.WriteLine(dec.ToString());
+            Console.WriteLine("decimal number:" + dec.ToString());
             string ba= Console.ReadLine();
         }
 
