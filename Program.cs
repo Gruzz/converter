@@ -10,9 +10,45 @@ namespace converter
     {
         static void Main(string[] args)
         {
+            bool a = true;
+            string decToBin = "";
+            while (a)
+            {
+                Console.WriteLine("enter decimal number greater than 0");
+                decToBin = Console.ReadLine();
+                if (decToBin.All(char.IsDigit))
+                {
+                    if (int.TryParse(decToBin, out int b))
+                    {
+                        if (int.Parse(decToBin) > 0)
+                        {
+                            a = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("number must be from 0 to 2147483647");
+                        }
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("too big number. enter number from 0 to 2147483647");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("not a decimal number! Try again!");
+                }
+            }
+            Console.WriteLine("binary number:" + ConvertDecToBin(decToBin));
+            Console.WriteLine("enter binary number");
+            string binToDec = Console.ReadLine();
+            Console.WriteLine("decimal number:" + ConvertBinToDec(binToDec));
+            string ba= Console.ReadLine();
+        }
+        public static string ConvertDecToBin ( string decToBin )
+        {
             int ost = 0;
-            Console.WriteLine("enter decimal number");
-            string decToBin = Console.ReadLine();
             string binStr = "";
             int decInt = int.Parse(decToBin);
             if (decInt == 1)
@@ -33,11 +69,12 @@ namespace converter
                     binStr = decInt.ToString() + binStr;
                 }
             }
-            Console.WriteLine("binary number:" + binStr);
-            Console.WriteLine("enter binary number");
-            string binToDec = Console.ReadLine();
+            return binStr;
+        }
+        public static string ConvertBinToDec ( string binToDec)
+        {
             int len = binToDec.Length;
-            int num = len-1;
+            int num = len - 1;
             int dec = 0;
             int index = 0;
             while (num >= 0)
@@ -47,13 +84,12 @@ namespace converter
                 {
                     i = i * 2;
                 }
-                dec = dec + ((int)char.GetNumericValue( binToDec[index] ) * i);
+                dec = dec + ((int)char.GetNumericValue(binToDec[index]) * i);
                 num = num - 1;
                 index++;
             }
-            Console.WriteLine("decimal number:" + dec.ToString());
-            string ba= Console.ReadLine();
+            string decNum = dec.ToString();
+            return decNum;
         }
-
     }
 }
