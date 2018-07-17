@@ -16,14 +16,30 @@ namespace converter
                 string choise = Console.ReadLine();
                 if (choise == "1")
                 {
-                    enterDecimal();
+                    string decNum = enterDecimal();                   
+                    if (decNum[0] != '-')
+                    {
+                        Console.WriteLine("binary number:" + ConvertDecToBin(decNum));
+                    }
+                    else
+                    {
+                        if (decNum != "-2147483648")
+                        {
+                            Console.WriteLine("binary number:" + ConvertDecNegotive(decNum));
+                        }
+                        else
+                        {
+                            Console.WriteLine("binary number(2): 10000000000000000000000000000000");
+                        }
+                    }
                     oneMoreTime = next();
                 }
                 else
                 {
                     if (choise == "2")
                     {
-                        enterBinary();
+                        string binNum = enterBinary();
+                        Console.WriteLine("decimal number:" + ConvertBinToDec(binNum));
                         oneMoreTime = next();
                     }
                     else
@@ -31,6 +47,10 @@ namespace converter
                         if (choise == "q")
                         {
                             return;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Enter 1,2 or q. Nothing else will work. ");
                         }
                     }
                 }
@@ -64,9 +84,8 @@ namespace converter
         }
         //перевод в десятичную сс
         public static string ConvertBinToDec(string binToDec)
-        {
-            int len = binToDec.Length;
-            int num = len - 1;
+        {            
+            int num = binToDec.Length - 1;
             int dec = 0;
             int index = 0;
             while (num >= 0)
@@ -77,7 +96,7 @@ namespace converter
                     i = i * 2;
                 }
                 dec = dec + ((int)char.GetNumericValue(binToDec[index]) * i);
-                num = num - 1;
+                num = num - 1;               
                 index++;
             }
             string decNum = dec.ToString();
@@ -86,12 +105,15 @@ namespace converter
         //перевод отрицательного целого числа в двоичную сс
         public static string ConvertDecNegotive(string decNeg)
         {
+            decNeg = decNeg.Remove(0, 1);
             StringBuilder otr = new StringBuilder("", 32);
             StringBuilder neg = ConvertDecToBin(decNeg);
+            //добавление недостающих 0 слева
             while (neg.Length < 32)
             {
                 neg = neg.Insert(0, "0");
-            }            
+            }
+            //инверсия строки
             for (int index = 0; index < 32; index++)
             {
                 if (neg[index] == '0')
@@ -103,6 +125,7 @@ namespace converter
                     otr.Append("0");
                 }
             }            
+            //прибавление 1 к инвертированной строке
             for (int index = 31; index > 0; index--)
             {
                 if (otr[index] == '0')
@@ -121,14 +144,14 @@ namespace converter
             return negBin;
         }
         // ввод десятичного числа
-        public static void enterDecimal()
+        public static string enterDecimal()
         {
             bool proverka = true;
             string decToBin = "";
             string decOtr = "";
             while (proverka)
             {
-                Console.WriteLine("enter a decimal integer between -2147483647 and 2147483647");
+                Console.WriteLine("enter a decimal integer between -2147483648 and 2147483647");
                 decToBin = Console.ReadLine();
                 decOtr = decToBin;
                 if (decToBin[0] != '-')
@@ -144,35 +167,35 @@ namespace converter
                 }
                 else
                 {
-                    decOtr = decOtr.Remove(0, 1);
-                    if (decOtr.All(char.IsDigit) && (int.TryParse(decOtr, out int b)))
+                    if (decToBin != "-2147483648")
                     {
-                        proverka = false;
+                        decOtr = decOtr.Remove(0, 1);
+                        if (decOtr.All(char.IsDigit) && (int.TryParse(decOtr, out int b)))
+                        {
+                            proverka = false;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Upps.. You're wrong. Try again. I know you can.");
+                        }
                     }
                     else
                     {
-                        Console.WriteLine("Upps.. You're wrong. Try again. I know you can.");
+                        proverka = false;
                     }
                 }
             }
-            if (decOtr == decToBin)
-            {
-                Console.WriteLine("binary number:" + ConvertDecToBin(decToBin));
-            }
-            else
-            {
-                Console.WriteLine("binary number:" + ConvertDecNegotive(decOtr));
-            }
+            return decToBin;           
         }
         //ввод двоичного числа
-        public static void enterBinary()
+        public static string enterBinary()
 
         {
             bool proverka = true;
             string binToDec = "";
             while (proverka)
             {
-                Console.WriteLine("enter a binary number between 10000000000000000000000000000001 and 1111111111111111111111111111111");
+                Console.WriteLine("enter a binary number between 10000000000000000000000000000000 and 1111111111111111111111111111111");
                 binToDec = Console.ReadLine();
                 StringBuilder binStr = new StringBuilder("");
                 binStr.Append(binToDec);
@@ -195,7 +218,7 @@ namespace converter
                     Console.WriteLine("Upps.. You're wrong. Try again. I know you can.");
                 }
             }
-            Console.WriteLine("decimal number:" + ConvertBinToDec(binToDec));
+            return binToDec;            
         }
         //продолжить или закрыть
         public static bool next()
